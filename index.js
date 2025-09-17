@@ -76,6 +76,7 @@ class MusicVisualizer {
     // Event listeners
     window.addEventListener("resize", this.onWindowResize.bind(this), false);
     this.mount.addEventListener("click", this.onClick.bind(this), false);
+    window.addEventListener("keydown", this.onKeyDown.bind(this), false);
     this.mount.addEventListener("wheel", this.onWheel.bind(this), {
       passive: false,
     });
@@ -189,8 +190,12 @@ class MusicVisualizer {
     } else {
       this.sound.play();
     }
-    // Request user location on first interaction
-    if (!this.locationRequested) {
+  }
+
+  onKeyDown(event) {
+    // Request user location when spacebar is pressed
+    if (event.code === "Space" && !this.locationRequested) {
+      event.preventDefault(); // Prevent page scroll
       this.locationRequested = true;
       this.requestLocation();
     }
@@ -205,6 +210,7 @@ class MusicVisualizer {
     }
 
     window.removeEventListener("resize", this.onWindowResize.bind(this));
+    window.removeEventListener("keydown", this.onKeyDown.bind(this));
     if (this.mount) {
       this.mount.removeEventListener("click", this.onClick.bind(this));
       this.mount.removeEventListener("wheel", this.onWheel.bind(this));
@@ -248,7 +254,7 @@ class MusicVisualizer {
       opacity: 0;
       transition: opacity 150ms ease-in-out;
     `;
-    hud.textContent = `Volume: ${Math.round(this.volume * 100)}%`;
+    // hud.textContent = `Volume: ${Math.round(this.volume * 100)}%`;
     this.mount.appendChild(hud);
     this.volumeHud = hud;
   }
@@ -313,7 +319,7 @@ class MusicVisualizer {
       pointer-events: none;
       opacity: 0.85;
     `;
-    hud.textContent = "Click to enable location-based tint";
+    // hud.textContent = "Press SPACE to enable location-based tint";
     this.mount.appendChild(hud);
     this.locationHud = hud;
   }
@@ -403,23 +409,23 @@ function initVisualizer() {
   `;
 
   // Add title
-  // const title = document.createElement('div')
-  // title.textContent = 'Unknown Lines Visualizer'
-  // title.style.cssText = `
-  //   position: absolute;
-  //   top: 20px;
-  //   left: 50%;
-  //   transform: translateX(-50%);
-  //   color: white;
-  //   font-size: 24px;
-  //   font-family: Arial, sans-serif;
-  //   font-weight: bold;
-  //   text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-  // `
+  const title = document.createElement("div");
+  // title.textContent = "Unknown Lines Visualizer";
+  title.style.cssText = `
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    font-size: 24px;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+  `;
 
   // Add instructions
   const instructions = document.createElement("div");
-  instructions.textContent = "Click anywhere to play/pause the music";
+  // instructions.textContent = "Click anywhere to play/pause the music";
   instructions.style.cssText = `
     position: absolute;
     bottom: 20px;
