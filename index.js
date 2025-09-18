@@ -54,7 +54,7 @@ class MusicVisualizer {
     const audioLoader = new THREE.AudioLoader()
     
     // Load the audio file
-    audioLoader.load('./Song 117.mp3', (buffer) => {
+    audioLoader.load('./backgroundmusic.mp3', (buffer) => {
       this.sound.setBuffer(buffer)
       this.sound.setLoop(true)
       this.sound.setVolume(this.volume) // Lower volume to not interfere with synthesizer
